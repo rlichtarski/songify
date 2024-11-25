@@ -1,5 +1,10 @@
-package com.songify.song;
+package com.songify.song.controller;
 
+import com.songify.song.dto.DeleteSongResponseDto;
+import com.songify.song.dto.SingleSongResponseDto;
+import com.songify.song.dto.SongRequestDto;
+import com.songify.song.dto.SongResponseDto;
+import com.songify.song.error.SongNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -40,13 +45,11 @@ public class SongRestController {
             @PathVariable Integer id,
             @RequestHeader(required = false) String requestId
     ) {
-        if (requestId != null) {
-            log.info("RequestID was: " + requestId);
+        log.info("requestId: " + requestId);
+        if (!database.containsKey(id)) {
+            throw new SongNotFoundException("Song with id " + id + " not found");
         }
         String song = database.get(id);
-        if (song == null) {
-            return ResponseEntity.notFound().build();
-        }
         SingleSongResponseDto songResponseDto = new SingleSongResponseDto(song);
         return ResponseEntity.ok(songResponseDto);
     }
@@ -62,12 +65,7 @@ public class SongRestController {
     @DeleteMapping("/song/{id}")
     public ResponseEntity<DeleteSongResponseDto> deleteSongByIdUsingPathVariable(@PathVariable Integer id) {
         if (!database.containsKey(id)) {
-            DeleteSongResponseDto body = new DeleteSongResponseDto(
-                    "Song with id " + id + " not found",
-                    HttpStatus.NOT_FOUND
-            );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(body);
+            throw new SongNotFoundException("Song with id " + id + " not found");
         }
         log.info("Deleting song: " + database.get(id));
         database.remove(id);
@@ -77,15 +75,6 @@ public class SongRestController {
         );
         return ResponseEntity.ok(body);
     }
-
-    /*@DeleteMapping("/song")
-    public ResponseEntity<String> deleteSongByIdUsingRequestParam(@RequestParam Integer id) {
-        log.info("Deleting song: " + database.get(id));
-        database.remove(id);
-        return ResponseEntity.ok("deleted a song!");
-    }*/
-
-
 
 
 }
