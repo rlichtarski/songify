@@ -1,4 +1,7 @@
 package com.songify.song.controller;
 
-public record Song(String artistName, String song) {
+import lombok.Builder;
+
+@Builder
+public record Song(String artistName, String songName) {
 }
