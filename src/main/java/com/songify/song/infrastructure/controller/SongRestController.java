@@ -80,6 +80,12 @@ public class SongRestController {
         return ResponseEntity.ok(body);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<GetSongResponseDto> test() {
+        songRetriever.compareSongs();
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "PATCH doesn't work so this is an alternative for PATCH")
     @PutMapping("patch/{id}")
     public ResponseEntity<PartiallyUpdateSongResponseDto> partiallyUpdateSong(

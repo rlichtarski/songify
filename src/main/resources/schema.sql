@@ -1,4 +1,4 @@
-DROP TABLE song;
+-- DROP TABLE song;
 
 CREATE TABLE IF NOT EXISTS song
 (
