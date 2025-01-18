@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,9 @@ class Song extends BaseEntity {
     private Instant releaseDate;
 
     private Long duration;
+
+    @OneToOne
+    private Genre genre;
 
     @Enumerated(EnumType.STRING)
     private SongLanguage language;
