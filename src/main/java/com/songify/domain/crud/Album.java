@@ -46,4 +46,7 @@ class Album extends BaseEntity {
     @ManyToMany(mappedBy = "albums")
     private Set<Artist> artists = new HashSet<>();
 
+    void addSong(final Song songById) {
+        songs.add(songById);
+    }
 }
