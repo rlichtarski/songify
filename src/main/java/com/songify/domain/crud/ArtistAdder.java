@@ -4,11 +4,9 @@ import com.songify.domain.crud.dto.ArtistDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
-@Transactional
 @AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
 class ArtistAdder {
 
