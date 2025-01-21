@@ -51,30 +51,20 @@ public class SongifyCrudFacade {
         return artistRetriever.findAllArtist();
     }
 
-    public List<SongDto> findAll(final Pageable pageable) {
-        return songRetriever.findAll(pageable)
-                .stream()
-                .map(song -> SongDto.builder()
-                        .id(song.getId())
-                        .name(song.getName())
-                        .build())
-                .collect(Collectors.toList());
+    public List<SongDto> findAllSongs(final Pageable pageable) {
+        return songRetriever.findAll(pageable);
     }
 
     public SongDto findSongDtoById(final Long id) {
-        final Song songById = songRetriever.findSongById(id);
-        return SongDto.builder()
-                .id(songById.getId())
-                .name(songById.getName())
-                .build();
+        return songRetriever.findSongDtoById(id);
     }
 
-    public void deleteById(final Long id) {
+    public void deleteSongById(final Long id) {
         songRetriever.existsById(id);
         songDeleter.deleteById(id);
     }
 
-    public void updateById(final Long id, final SongDto newSongDto) {
+    public void updateSongById(final Long id, final SongDto newSongDto) {
         songRetriever.existsById(id);
         songUpdater.updateById(
                 id,
@@ -86,7 +76,7 @@ public class SongifyCrudFacade {
 
     }
 
-    public SongDto updatePartiallyById(final Long id, final SongDto songToUpdate) {
+    public SongDto updateSongPartiallyById(final Long id, final SongDto songToUpdate) {
         songRetriever.existsById(id);
         Song songFromDb = songRetriever.findSongById(id);
         Song toSave = new Song();

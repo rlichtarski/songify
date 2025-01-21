@@ -1,5 +1,6 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.SongDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -17,9 +19,23 @@ class SongRetriever {
 
     private final List<Song> songs = new ArrayList<>();
 
-    List<Song> findAll(Pageable pageable) {
+    List<SongDto> findAll(Pageable pageable) {
         log.info("Retrieving all songs...");
-        return songRepository.findAll(pageable);
+        return songRepository.findAll(pageable).stream()
+            .map(song -> SongDto.builder()
+                    .id(song.getId())
+                    .name(song.getName())
+                    .build())
+            .collect(Collectors.toList());
+    }
+
+    SongDto findSongDtoById(Long id) {
+        final Song songById = songRepository.findById(id)
+                .orElseThrow(() -> new SongNotFoundException("Song with id " + id + " not found"));
+        return SongDto.builder()
+                .id(songById.getId())
+                .name(songById.getName())
+                .build();
     }
 
     Song findSongById(Long id) {
@@ -31,21 +47,6 @@ class SongRetriever {
         if (!songRepository.existsById(id)) {
             throw new SongNotFoundException("Song with id " + id + " not found");
         }
-    }
-
-    Song compareSongs() {
-        Song song1 = songRepository.findById(3L)
-                .orElseThrow(() -> new SongNotFoundException("Song with id " + 3L + " not found."));
-
-        log.info(song1);
-        songs.add(song1);
-
-//        for (Song song : songs) {
-//            log.info(song);
-//        }
-
-        log.info(songs.get(0).equals(songs.get(1)));
-        return song1;
     }
 
 }
