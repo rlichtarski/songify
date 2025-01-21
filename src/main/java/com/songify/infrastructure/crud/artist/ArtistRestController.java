@@ -20,7 +20,7 @@ import java.util.Set;
 @Log4j2
 @RequestMapping("/artists")
 @AllArgsConstructor
-class ArtistController {
+class ArtistRestController {
 
     private final SongifyCrudFacade songifyCrudFacade;
 

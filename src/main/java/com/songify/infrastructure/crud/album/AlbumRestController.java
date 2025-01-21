@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Log4j2
-@RequestMapping("/album")
+@RequestMapping("/albums")
 @AllArgsConstructor
-class AlbumController {
+class AlbumRestController {
 
     private final SongifyCrudFacade songifyCrudFacade;
 
