@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
@@ -47,8 +46,8 @@ public class SongifyCrudFacade {
         return songAdder.addSong(songDto);
     }
 
-    public Set<ArtistDto> findAllArtists() {
-        return artistRetriever.findAllArtist();
+    public Set<ArtistDto> findAllArtists(final Pageable pageable) {
+        return artistRetriever.findAllArtist(pageable);
     }
 
     public List<SongDto> findAllSongs(final Pageable pageable) {
