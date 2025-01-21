@@ -18,5 +18,4 @@ VALUES
     ('Radioactive', 200, '2023-01-16 01:45:00', 'ENGLISH', 7, 2),
     ('Roxanne', 205, '2023-01-17 02:00:00', 'ENGLISH', 8, 1),
     ('Smells Like Teen Spirit', 175, '2023-01-18 03:15:00', 'ENGLISH', 8, 2),
-    ('Watermelon Sugar', 240, '2023-01-19 04:30:00', 'ENGLISH', 9, 1),
-    ('Bailando', 190, '2023-01-20 05:45:00', 'ENGLISH', 9, 2);
+    ('Watermelon Sugar', 240, '2023-01-19 04:30:00', 'ENGLISH', 9, 1);
