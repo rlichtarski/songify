@@ -1,6 +1,5 @@
 package com.songify.domain.crud;
 
-import com.songify.domain.crud.dto.SongDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

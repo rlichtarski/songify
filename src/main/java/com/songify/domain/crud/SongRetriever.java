@@ -22,11 +22,11 @@ class SongRetriever {
     List<SongDto> findAll(Pageable pageable) {
         log.info("Retrieving all songs...");
         return songRepository.findAll(pageable).stream()
-            .map(song -> SongDto.builder()
-                    .id(song.getId())
-                    .name(song.getName())
-                    .build())
-            .collect(Collectors.toList());
+                .map(song -> SongDto.builder()
+                        .id(song.getId())
+                        .name(song.getName())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     SongDto findSongDtoById(Long id) {

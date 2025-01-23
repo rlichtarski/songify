@@ -7,5 +7,6 @@ import java.util.Set;
 
 interface ArtistRepository extends Repository<Artist, Long> {
     Artist save(Artist artist);
+
     Set<Artist> findAll(final Pageable pageable);
 }
