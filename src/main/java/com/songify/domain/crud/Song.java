@@ -17,6 +17,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.Instant;
 
@@ -45,7 +47,8 @@ class Song extends BaseEntity {
 
     private Long duration;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN) //idk why, dalej pobiera wszystkie gatunki w formie n+1 (jeśli nie ma join fetch s.genre w query)
+    @OneToOne(fetch = FetchType.EAGER)
     private Genre genre;
 
     @Enumerated(EnumType.STRING)
