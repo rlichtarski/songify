@@ -1,6 +1,7 @@
 package com.songify.domain.crud;
 
 import com.songify.domain.crud.util.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -48,7 +49,7 @@ class Song extends BaseEntity {
     private Long duration;
 
     @Fetch(FetchMode.JOIN) //idk why, dalej pobiera wszystkie gatunki w formie n+1 (jeśli nie ma join fetch s.genre w query)
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Genre genre;
 
     @Enumerated(EnumType.STRING)

@@ -40,6 +40,10 @@ class SongRetriever {
         return SongDto.builder()
                 .id(songById.getId())
                 .name(songById.getName())
+                .genre(new GenreDto(
+                        songById.getGenre().getId(),
+                        songById.getGenre().getName()
+                ))
                 .build();
     }
 
