@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -48,5 +49,10 @@ class Album extends BaseEntity {
 
     void addSong(final Song songById) {
         songs.add(songById);
+    }
+
+    void removeArtist(Artist artist) {
+        artists.remove(artist);
+        artist.removeAlbum(this);
     }
 }

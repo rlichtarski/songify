@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Log4j2
 @Service
 @Transactional
@@ -28,6 +30,10 @@ class SongDeleter {
 
         deleteById(songId);
         genreDeleter.deleteById(genreId);
+    }
+
+    void deleteAllSongsById(final Set<Long> songsIds) {
+        songRepository.deleteByIdIn(songsIds);
     }
 }
 
