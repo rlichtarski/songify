@@ -51,4 +51,10 @@ class Artist extends BaseEntity {
     void removeAlbum(Album album) {
         albums.remove(album);
     }
+
+    void addAlbum(final Album album) {
+        //czyli to co tutaj jest to jest dirty checking? Że zapisujemy sobie po prostu do Seta, nic więcej?
+        albums.add(album);
+        album.addArtist(this);
+    }
 }
