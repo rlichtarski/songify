@@ -9,7 +9,6 @@ import com.songify.domain.crud.dto.GenreDto;
 import com.songify.domain.crud.dto.GenreRequestDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
-@Transactional
 public class SongifyCrudFacade {
 
     private final SongAdder songAdder;
@@ -105,7 +103,7 @@ public class SongifyCrudFacade {
     }
 
     public void deleteArtistByIdWithAlbumsAndSongs(Long artistId) {
-            artistDeleter.deleteArtistByIdWithAlbumsAndSongs(artistId);
+        artistDeleter.deleteArtistByIdWithAlbumsAndSongs(artistId);
     }
 
     public void addArtistToAlbum(Long artistId, Long albumId) {

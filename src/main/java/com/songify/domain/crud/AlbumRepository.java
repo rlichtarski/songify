@@ -1,6 +1,8 @@
 package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.AlbumInfo;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -23,7 +25,7 @@ interface AlbumRepository extends Repository<Album, Long> {
 
     @Query("""
         select a from Album a
-        inner join fetch a.artists artists
+        inner join a.artists artists
         where artists.id = :id
         """)
     Set<Album> findAllAlbumsByArtistId(@Param("id") Long id);

@@ -6,7 +6,7 @@ CREATE TABLE artist_albums
 );
 
 ALTER TABLE artist_albums
-    ADD CONSTRAINT fk_artalb_on_album FOREIGN KEY (albums_id) REFERENCES album (id);
+    ADD CONSTRAINT fk_artalb_on_album FOREIGN KEY (albums_id) REFERENCES album (id) on delete restrict;
 
 ALTER TABLE artist_albums
-    ADD CONSTRAINT fk_artalb_on_artist FOREIGN KEY (artists_id) REFERENCES artist (id);
+    ADD CONSTRAINT fk_artalb_on_artist FOREIGN KEY (artists_id) REFERENCES artist (id) on delete restrict;
