@@ -114,4 +114,8 @@ public class SongifyCrudFacade {
         return artistUpdater.updateArtistNameById(artistId, name);
     }
 
+    public ArtistDto addArtistWithDefaultAlbumAndSong(ArtistRequestDto artistRequestDto) {
+        return artistAdder.addArtistWithDefaultAlbumAndSong(artistRequestDto);
+    }
+
 }

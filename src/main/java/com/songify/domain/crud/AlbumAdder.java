@@ -15,7 +15,7 @@ class AlbumAdder {
     private final AlbumRepository albumRepository;
     private final SongRetriever songRetriever;
 
-    public AlbumDto addAlbum(Long songId, String title, Instant releaseDate) {
+    AlbumDto addAlbum(Long songId, String title, Instant releaseDate) {
         final Song songById = songRetriever.findSongById(songId);
         Album album = new Album();
         album.setTitle(title);
@@ -23,6 +23,13 @@ class AlbumAdder {
         album.addSong(songById);
         final Album savedAlbum = albumRepository.save(album);
         return new AlbumDto(savedAlbum.getId(), savedAlbum.getTitle());
+    }
+
+    Album addAlbum(String title, Instant releaseDate) {
+        Album album = new Album();
+        album.setTitle(title);
+        album.setReleaseDate(releaseDate);
+        return albumRepository.save(album);
     }
 
 }

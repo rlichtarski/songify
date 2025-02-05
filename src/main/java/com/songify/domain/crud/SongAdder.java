@@ -26,4 +26,11 @@ class SongAdder {
         return new SongDto(savedSong.getId(), savedSong.getName(), new GenreDto(savedSong.getId(), savedSong.getName()));
     }
 
+    Song addSongGetEntity(SongRequestDto songDto) {
+        final SongLanguageDto language = songDto.language();
+        final SongLanguage songLanguage = SongLanguage.valueOf(language.name());
+        final Song song = new Song(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);
+        return songRepository.save(song);
+    }
+
 }
