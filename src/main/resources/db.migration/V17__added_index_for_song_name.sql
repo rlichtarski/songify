@@ -1,0 +1,13 @@
+CREATE INDEX idx_song_name ON song (name);
+
+ALTER TABLE album
+    ALTER COLUMN version DROP NOT NULL;
+
+ALTER TABLE artist
+    ALTER COLUMN version DROP NOT NULL;
+
+ALTER TABLE genre
+    ALTER COLUMN version DROP NOT NULL;
+
+ALTER TABLE song
+    ALTER COLUMN version DROP NOT NULL;
