@@ -12,12 +12,14 @@ import com.songify.domain.crud.dto.SongRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
+@Transactional
 public class SongifyCrudFacade {
 
     private final SongAdder songAdder;
