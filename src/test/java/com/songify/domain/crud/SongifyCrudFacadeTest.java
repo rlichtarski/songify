@@ -5,11 +5,15 @@ import com.songify.domain.crud.dto.AlbumInfo;
 import com.songify.domain.crud.dto.AlbumRequestDto;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
+import com.songify.domain.crud.dto.GenreDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongLanguageDto;
 import com.songify.domain.crud.dto.SongRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -19,7 +23,11 @@ import static com.songify.domain.crud.SongifyCrudFacadeConfiguration.createSongi
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class SongifyCrudFacadeTest {
 
     SongifyCrudFacade songifyCrudFacade = createSongifyCrud(
@@ -28,6 +36,9 @@ class SongifyCrudFacadeTest {
             new InMemoryArtistRepository(),
             new InMemoryAlbumRepository()
     );
+
+    @Mock
+    SongifyCrudFacade mockedSongifyCrudFacade;
 
     @Test
     @DisplayName("Should add 'Artist1' with id:0 When name was sent")
@@ -47,6 +58,23 @@ class SongifyCrudFacadeTest {
         assertThat(response.name()).isEqualTo("Artist1");
         final int size = songifyCrudFacade.findAllArtists(Pageable.unpaged()).size();
         assertThat(size).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("Should retrieve song by id with genre")
+    public void should_retrieve_song_by_id() {
+        // given
+        when(mockedSongifyCrudFacade.findSongDtoById(1L))
+                .thenReturn(
+                        new SongDto(1L, "TestName", new GenreDto(1L, "default")));
+
+        // when
+        final SongDto songDtoById = mockedSongifyCrudFacade.findSongDtoById(1L);
+
+        // then
+        assertThat(songDtoById.id()).isEqualTo(1L);
+        assertThat(songDtoById.name()).isEqualTo("TestName");
+        verify(mockedSongifyCrudFacade, times(1)).findSongDtoById(1L);
     }
 
     @Test

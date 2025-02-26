@@ -87,12 +87,21 @@ public class SongRestController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<UpdateSongResponseDto> update(@PathVariable Long id,
+    ResponseEntity<UpdateSongResponseDto> updateSong(@PathVariable Long id,
                                                  @RequestBody @Valid UpdateSongRequestDto request) {
         SongDto newSongDto = mapFromUpdateSongRequestDtoToSongDto(request);
         songFacade.updateSongById(id, newSongDto);
         UpdateSongResponseDto body = mapFromSongToUpdateSongResponseDto(newSongDto);
         return ResponseEntity.ok(body);
+    }
+
+    @PutMapping("/{songId}/genres/{genreId}")
+    ResponseEntity<String> assignGenreToSong(
+            @PathVariable Long songId,
+            @PathVariable Long genreId
+    ) {
+        songFacade.assignGenreToSong(songId, genreId);
+        return ResponseEntity.ok("updated");
     }
 
     @Operation(summary = "PATCH doesn't work so this is an alternative for PATCH")

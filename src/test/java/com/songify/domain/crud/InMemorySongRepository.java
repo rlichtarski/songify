@@ -38,7 +38,6 @@ public class InMemorySongRepository implements SongRepository {
     public Song save(final Song song) {
         long index = this.index.getAndIncrement();
         song.setId(index);
-        song.setGenre(new Genre(1L, "default"));
         db.put(index, song);
         return song;
     }

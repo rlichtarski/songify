@@ -33,7 +33,8 @@ class AlbumAdder {
                 savedAlbum.getTitle(),
                 savedAlbum.getArtists()
                         .stream().map(artist -> new ArtistDto(artist.getId(), artist.getName()))
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toSet()),
+                savedAlbum.getSongsIds()
         );
     }
 

@@ -20,6 +20,7 @@ import org.hibernate.annotations.Fetch;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -62,7 +63,12 @@ class Album extends BaseEntity {
     }
 
     void addArtist(final Artist artist) {
-        //tutaj tak samo, to jest ten dirty checking?
         artists.add(artist);
     }
+
+    Set<Long> getSongsIds() {
+        return songs.stream()
+                .map(Song::getId).collect(Collectors.toSet());
+    }
+
 }

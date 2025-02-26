@@ -1,12 +1,14 @@
 package com.songify.infrastructure.crud.song.controller;
 
 
+import com.songify.domain.crud.dto.AlbumDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.CreateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.DeleteSongResponseDto;
+import com.songify.infrastructure.crud.album.dto.response.GetAllAlbumsResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetAllSongsResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.PartiallyUpdateSongResponseDto;

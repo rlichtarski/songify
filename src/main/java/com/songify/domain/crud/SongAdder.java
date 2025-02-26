@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 class SongAdder {
 
     private final SongRepository songRepository;
+    private final GenreAssigner genreAssigner;
 
     SongDto addSong(SongRequestDto songDto) {
         final SongLanguageDto language = songDto.language();
@@ -23,7 +24,8 @@ class SongAdder {
         final Song song = new Song(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);
         log.info("New songName: " + songDto);
         final Song savedSong = songRepository.save(song);
-        return new SongDto(savedSong.getId(), savedSong.getName(), new GenreDto(savedSong.getId(), savedSong.getName()));
+        genreAssigner.assignDefaultGenreToSong(song.getId());
+        return new SongDto(savedSong.getId(), savedSong.getName(), new GenreDto(savedSong.getGenre().getId(), savedSong.getGenre().getName()));
     }
 
     Song addSongGetEntity(SongRequestDto songDto) {

@@ -15,8 +15,12 @@ class AlbumRetriever {
     private final AlbumRepository albumRepository;
 
     AlbumInfo findAlbumByIdWithArtistsAndSongs(final Long id) {
-        return albumRepository.findAlbumByIdWithArtistsAndSongs(id)
+        final AlbumInfo albumInfo = albumRepository.findAlbumByIdWithArtistsAndSongs(id)
                 .orElseThrow(() -> new AlbumNotFoundException("Album with id: " + id + " not found"));
+        if (albumInfo.getArtists().isEmpty()) {
+            throw new AlbumNotFoundException("Album with id: " + id + " not found");
+        }
+        return albumInfo;
     }
 
     long countArtistsByAlbumId(final Long id) {
@@ -35,7 +39,8 @@ class AlbumRetriever {
                         album.getTitle(),
                         album.getArtists()
                                 .stream().map(artist -> new ArtistDto(artist.getId(), artist.getName()))
-                                .collect(Collectors.toSet())
+                                .collect(Collectors.toSet()),
+                        album.getSongsIds()
                 )).collect(Collectors.toSet());
     }
 
@@ -51,7 +56,8 @@ class AlbumRetriever {
                 album.getTitle(),
                 album.getArtists()
                         .stream().map(artist -> new ArtistDto(artist.getId(), artist.getName()))
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toSet()),
+                album.getSongsIds()
         );
     }
 
@@ -63,7 +69,8 @@ class AlbumRetriever {
                         album.getTitle(),
                         album.getArtists()
                                 .stream().map(artist -> new ArtistDto(artist.getId(), artist.getName()))
-                                .collect(Collectors.toSet())
+                                .collect(Collectors.toSet()),
+                        album.getSongsIds()
                 )).collect(Collectors.toSet());
     }
 }
