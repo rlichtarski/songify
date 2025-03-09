@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +32,14 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
         log.info(request.toString());
-        final String authorization = request.getHeader("Authorization");
-        if (authorization == null) {
+        String token = getTokenFromRequest(request);
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
         final JWTVerifier jwtVerifier = JWT.require(Algorithm.RSA256((RSAPublicKey) keyPair.getPublic(), null))
                 .build();
 
-        final String token = authorization.substring(7);
         final DecodedJWT decodedToken = jwtVerifier.verify(token);
         final String login = decodedToken.getSubject();
         final List<SimpleGrantedAuthority> roles = decodedToken.getClaim("roles")
@@ -53,5 +53,21 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
+            return authorizationHeader.substring(7);
+        }
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("accessToken")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
 
 }
