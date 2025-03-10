@@ -1,6 +1,6 @@
 package com.songify;
 
-import com.songify.infrastructure.security.jwt.JwtConfigurationProperties;
+//import com.songify.infrastructure.security.jwt.JwtConfigurationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
