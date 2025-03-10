@@ -1,7 +1,9 @@
-package com.songify.infrastructure.security.jwt;
+// IT IS COMMENTED OU BECAUSE OF OAUTH2 FOR GOOGLE
 
-public record TokenRequestDto(
-        String username,
-        String password
-) {
-}
+//package com.songify.infrastructure.security.jwt;
+//
+//public record TokenRequestDto(
+//        String username,
+//        String password
+//) {
+//}

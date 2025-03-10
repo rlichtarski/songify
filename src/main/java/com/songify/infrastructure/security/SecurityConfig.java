@@ -1,7 +1,7 @@
 package com.songify.infrastructure.security;
 
 import com.songify.domain.usercrud.UserRepository;
-import com.songify.infrastructure.security.jwt.JwtAuthTokenFilter;
+//import com.songify.infrastructure.security.jwt.JwtAuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,14 +40,15 @@ class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    // SOME PARTS ARE COMMENTED OUT BECAUSE OF OAUTH2 FOR GOOGLE
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthTokenFilter jwtAuthTokenFilter) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity/*, JwtAuthTokenFilter jwtAuthTokenFilter*/) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.cors(corsConfigurerCustomizer());
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
         httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
         httpSecurity.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        httpSecurity.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//        httpSecurity.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.authorizeHttpRequests(authorize ->
                 authorize
                         .requestMatchers("/swagger-ui/**").permitAll()
@@ -58,7 +59,7 @@ class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/albums/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/genres/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/token/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/token/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/songs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/songs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/songs/**").hasRole("ADMIN")
