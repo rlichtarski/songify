@@ -2,6 +2,7 @@ package com.songify.infrastructure.security;
 
 import com.songify.domain.usercrud.UserRepository;
 //import com.songify.infrastructure.security.jwt.JwtAuthTokenFilter;
+import com.songify.infrastructure.security.jwt.JwtAuthConverter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -51,19 +53,25 @@ class SecurityConfig {
     SecurityFilterChain securityFilterChain(
             HttpSecurity httpSecurity,
             AuthenticationSuccessHandler successHandler,
-            CustomOidcUserService customOidcUserService
-//            JwtAuthTokenFilter jwtAuthTokenFilter
+            JwtAuthConverter jwtAuthConverter,
+            CookieTokenResolver resolver
+//            CustomOidcUserService customOidcUserService //COMMENTED OUT BECAUSE WE DO NOT USE STATEFUL USER SESSION RIGHT NOW FOR OAUTH2
+//            JwtAuthTokenFilter jwtAuthTokenFilter // COMMENTED OUT BECAUSE OF NOT USING JWT
     ) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.cors(corsConfigurerCustomizer());
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
         httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
-        httpSecurity.oauth2Login(c -> c.successHandler(successHandler)
-                .userInfoEndpoint(userInfo -> userInfo.oidcUserService(
-                        customOidcUserService
-                )));
-//        httpSecurity.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        httpSecurity.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//        httpSecurity.oauth2Login(c -> c.successHandler(successHandler) //COMMENTED OUT BECAUSE WE DO NOT USE STATEFUL USER SESSION RIGHT NOW FOR OAUTH2
+//                .userInfoEndpoint(userInfo -> userInfo.oidcUserService(
+//                        customOidcUserService
+//                )));
+        httpSecurity.oauth2Login(c -> c.successHandler(successHandler));
+        httpSecurity.oauth2ResourceServer(c -> c.jwt(
+                jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)
+        ).bearerTokenResolver(resolver));
+        httpSecurity.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // COMMENTED OUT ONLY FOR STATEFUL OAUTH2
+//        httpSecurity.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class); // COMMENTED OUT BECAUSE OF NOT USING JWT
         httpSecurity.authorizeHttpRequests(authorize ->
                 authorize
                         .requestMatchers("/swagger-ui/**").permitAll()
@@ -74,7 +82,7 @@ class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/albums/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/genres/**").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/token/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/token/**").permitAll() // COMMENTED OUT BECAUSE OF NOT USING JWT
                         .requestMatchers(HttpMethod.GET, "/message").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/songs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/songs/**").hasRole("ADMIN")
