@@ -50,14 +50,18 @@ class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(
             HttpSecurity httpSecurity,
-            AuthenticationSuccessHandler successHandler
+            AuthenticationSuccessHandler successHandler,
+            CustomOidcUserService customOidcUserService
 //            JwtAuthTokenFilter jwtAuthTokenFilter
     ) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.cors(corsConfigurerCustomizer());
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
         httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
-        httpSecurity.oauth2Login(c -> c.successHandler(successHandler));
+        httpSecurity.oauth2Login(c -> c.successHandler(successHandler)
+                .userInfoEndpoint(userInfo -> userInfo.oidcUserService(
+                        customOidcUserService
+                )));
 //        httpSecurity.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 //        httpSecurity.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.authorizeHttpRequests(authorize ->
@@ -71,6 +75,7 @@ class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/albums/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/genres/**").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/token/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/message").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/songs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/songs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/songs/**").hasRole("ADMIN")
